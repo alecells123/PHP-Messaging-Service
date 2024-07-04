@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Setup</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Welcome to the 40th Quadrennial EE Games!</h1>
+            <div class="box">
+                <h2 class="subtitle">Player Setup</h2>
+                <?php
+                $player_name = '';
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['player_name'])) {
+                    $player_name = htmlspecialchars($_POST['player_name']);
+                }
+                ?>
+                <?php if ($player_name): ?>
+                    <p class="notification is-success">Name submitted successfully: <?php echo $player_name; ?></p>
+                <?php else: ?>
+                    <form method="POST" action="">
+                        <div class="field">
+                            <label class="label" for="player_name">Please enter your name:</label>
+                            <div class="control">
+                                <input type="text" id="player_name" name="player_name" class="input" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">Submit Name</button>
+                            </div>
+                        </div>
+                    </form>
+                <?php endif; ?>
+                <figure class="image is-512x512">
+                    <img src="https://via.placeholder.com/512" alt="Profile Picture" id="profile-pic">
+                </figure>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link" onclick="openCamera()">Take Picture</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function openCamera() {
+            // Placeholder function to open the camera
+            alert('Camera functionality is not implemented yet.');
+        }
+    </script>
+</body>
+</html>
