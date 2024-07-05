@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+import subprocess
+import shlex
 
 app = FastAPI()
 
@@ -7,32 +9,22 @@ app = FastAPI()
 async def root():
     return {"message": "Hello World"}
 
-# GET player by id
-@app.get("/player/{player_id}")
-async def get_player(player_id: int):
-    return {"player_id": player_id}
-
-# POST player by id
-@app.post("/player/{player_id}")
-async def create_player(player_id: int, player_name: str):
-    return {"player_id": player_id, "player_name": player_name}
-
-# PUT player by id
-@app.put("/player/{player_id}")
-async def update_player(player_id: int, player_name: str):
-    return {"player_id": player_id, "player_name": player_name}
-
-# DELETE player by id
-@app.delete("/player/{player_id}")
-async def delete_player(player_id: int):
-    return {"player_id": player_id}
-
 # GET player by name
 @app.get("/player/{player_name}")
 async def get_player_by_name(player_name: str):
-    return {"player_name": player_name}
+    try:
+        cmd = ["php", "../player.php", f"get_player('{player_name}')"]
+        proc = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return {"response": proc.stdout}
+    except subprocess.CalledProcessError as e:
+        raise HTTPException(status_code=500, detail=f"Error: {e.stderr}")
 
 # POST player by name
 @app.post("/player/{player_name}")
 async def create_player_by_name(player_name: str):
-    return {"player_name": player_name}
+    try:
+        cmd = ["php", "../player.php", f"create_player('{player_name}')"]
+        proc = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        return {"response": proc.stdout}
+    except subprocess.CalledProcessError as e:
+        raise HTTPException(status_code=500, detail=f"Error: {e.stderr}")

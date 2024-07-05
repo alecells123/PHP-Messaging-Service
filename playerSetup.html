@@ -12,31 +12,31 @@
             <h1 class="title">Welcome to the 40th Quadrennial EE Games!</h1>
             <div class="box">
                 <h2 class="subtitle">Player Setup</h2>
-                <?php
-                $player_name = '';
-                if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['player_name'])) {
-                    $player_name = htmlspecialchars($_POST['player_name']);
-                }
-                ?>
-                <?php if ($player_name): ?>
-                    <p class="notification is-success">Name submitted successfully: <?php echo $player_name; ?></p>
-                <?php else: ?>
-                    <form method="POST" action="">
-                        <div class="field">
-                            <label class="label" for="player_name">Please enter your name:</label>
-                            <div class="control">
-                                <input type="text" id="player_name" name="player_name" class="input" required>
-                            </div>
+                <form method="POST" id="playerForm">
+                    <div class="field">
+                        <label class="label" for="player_name">Please enter your name:</label>
+                        <div class="control">
+                            <input type="text" id="player_name" name="player_name" class="input" required>
                         </div>
-                        <div class="field">
-                            <div class="control">
-                                <button type="submit" class="button is-primary">Submit Name</button>
-                            </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button type="submit" class="button is-primary">Submit Name</button>
                         </div>
-                    </form>
+                    </div>
+                </form>
+                <?php if (isset($success_message)): ?>
+                    <div id="notification-success" class="notification is-success">
+                        <?php echo $success_message; ?>
+                    </div>
                 <?php endif; ?>
-                <figure class="image is-512x512">
-                    <img src="https://via.placeholder.com/512" alt="Profile Picture" id="profile-pic">
+                <?php if (isset($error_message)): ?>
+                    <div id="notification-error" class="notification is-danger">
+                        <?php echo $error_message; ?>
+                    </div>
+                <?php endif; ?>
+                <figure class="image is-256x256">
+                    <img src="https://via.placeholder.com/256" alt="Profile Picture" id="profile-pic">
                 </figure>
                 <div class="field">
                     <div class="control">
@@ -52,5 +52,14 @@
             alert('Camera functionality is not implemented yet.');
         }
     </script>
+    <script>
+        document.getElementById('playerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var playerName = document.getElementById('player_name').value;
+            this.action = 'http://127.0.0.1:8000/player/' + encodeURIComponent(playerName);
+            this.submit();
+        });
+    </script>
 </body>
 </html>
+

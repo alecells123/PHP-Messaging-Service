@@ -2,3 +2,5 @@
 __pycache__/api.cpython-310.pyc
 
 db_connect_NO_COMMIT.php
+
+api/__pycache__/
